@@ -1,7 +1,7 @@
 from ortools.algorithms.python import knapsack_solver
 import json
 import os
-
+import time
     
 def process(data_path): 
     data = {
@@ -28,7 +28,8 @@ def KnapSacks(data, filename):
     result = { 
          'Total weight': 0 , 
          'Packed items': [], 
-         'Packed items length': 0 
+         'Packed items length': 0 , 
+         'Time': 0
     }
 
 
@@ -43,16 +44,22 @@ def KnapSacks(data, filename):
     packed_items = []
     packed_weights = []
     total_weight = 0
+
     print("Total value =", computed_value)
+    start = time.start()
     for i in range(len(values)):
         if solver.best_solution_contains(i):
             packed_items.append(i)
             packed_weights.append(weights[0][i])
             total_weight += weights[0][i]
+
+            
+            
     result["Total weight"] =  total_weight
     result["Packed items"] =  packed_items
     result['Packed items length'] =  len(packed_items)
-
+    end = time.end()
+    result['Time'] =  end - start
     out_file = open(filename, "w") 
   
     json.dump(result, out_file) 
@@ -73,7 +80,14 @@ def main():
          data = process(os.path.join(path_data,test_case ))
          out_path = os.path.join(out_dir,test_case[:-3]+ ".json" )
          print(out_path)
-         KnapSacks(data,out_path )
+         if os.path.exists(out_path): 
+          continue
+         else: 
+            try:
+                KnapSacks(data, out_path)
+            except Exception as e:
+                print("Error occurred:", e)
+                continue
 
 
          
