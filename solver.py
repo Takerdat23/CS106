@@ -46,7 +46,7 @@ def KnapSacks(data, filename):
     total_weight = 0
 
     print("Total value =", computed_value)
-    start = time.start()
+ 
     for i in range(len(values)):
         if solver.best_solution_contains(i):
             packed_items.append(i)
@@ -58,8 +58,8 @@ def KnapSacks(data, filename):
     result["Total weight"] =  total_weight
     result["Packed items"] =  packed_items
     result['Packed items length'] =  len(packed_items)
-    end = time.end()
-    result['Time'] =  end - start
+
+    result['Time'] = 0
     out_file = open(filename, "w") 
   
     json.dump(result, out_file) 
